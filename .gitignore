@@ -4,7 +4,7 @@
 **/.idea/*
 # User-specific stuff
 **/target/*
-
+**/*.iml
 **/*.class
 .idea/**/workspace.xml
 .idea/**/tasks.xml
