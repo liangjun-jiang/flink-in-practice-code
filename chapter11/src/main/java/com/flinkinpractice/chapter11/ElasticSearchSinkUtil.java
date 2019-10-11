@@ -14,6 +14,7 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
+import org.apache.http.message.BasicHeader;
 import org.elasticsearch.action.ActionRequest;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.common.util.concurrent.EsRejectedExecutionException;
@@ -41,6 +42,7 @@ public class ElasticSearchSinkUtil {
         esSinkBuilder.setFailureHandler(new RetryRejectedExecutionFailureHandler());
         esSinkBuilder.setRestClientFactory(
                 restClientBuilder -> {
+                    restClientBuilder.setDefaultHeaders(new BasicHeader[]{new BasicHeader("Content-Type","application/json")});
                     restClientBuilder.setHttpClientConfigCallback(new RestClientBuilder.HttpClientConfigCallback() {
                         @Override
                         public HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder httpClientBuilder) {
