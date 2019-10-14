@@ -25,7 +25,6 @@ import java.util.*;
 
 @Slf4j
 public class Main {
-
     private static final String READ_TOPIC = "student-1";
 
     public static void main(String[] args) throws Exception {
