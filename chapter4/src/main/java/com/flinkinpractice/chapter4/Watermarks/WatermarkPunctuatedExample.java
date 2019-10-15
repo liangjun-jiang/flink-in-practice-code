@@ -7,13 +7,21 @@ import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
+/**
+ *
+ * lion,1,1571174849507
+ * lion,2,1571174849509
+ * lion,3,1571174849601
+ *
+ */
+
 public class WatermarkPunctuatedExample {
     public static void main(String[] args) throws Exception {
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
         env.setParallelism(1);
 
-        SingleOutputStreamOperator<Word> data = env.socketTextStream("localhost", 9001)
+        SingleOutputStreamOperator<Word> data = env.socketTextStream("localhost", 9000)
                 .map(new MapFunction<String, Word>() {
                     @Override
                     public Word map(String value) throws Exception {
