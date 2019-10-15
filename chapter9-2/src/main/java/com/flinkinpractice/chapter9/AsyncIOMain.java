@@ -5,7 +5,6 @@ import org.apache.flink.streaming.api.datastream.AsyncDataStream;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-
 import java.util.concurrent.TimeUnit;
 
 public class AsyncIOMain {
@@ -17,7 +16,7 @@ public class AsyncIOMain {
         // set up the streaming execution environment
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-        //获取数据
+        // obtain data from socket (nc -l 9000)
         DataStreamSource<String> socketStream = env.socketTextStream(hostname, port);
 
         socketStream.print();
@@ -27,11 +26,6 @@ public class AsyncIOMain {
 
         resultStream.print();
 
-        env.execute("Async IO  with Flink");
+        env.execute("Async IO  example in Flink");
     }
-
-
-
-
-
 }

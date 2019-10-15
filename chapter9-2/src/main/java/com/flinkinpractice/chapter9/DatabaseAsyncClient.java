@@ -2,6 +2,7 @@ package com.flinkinpractice.chapter9;
 
 
 import com.github.jasync.sql.db.QueryResult;
+import com.github.jasync.sql.db.general.ArrayRowData;
 import com.github.jasync.sql.db.mysql.MySQLConnection;
 import com.github.jasync.sql.db.mysql.MySQLConnectionBuilder;
 import com.github.jasync.sql.db.pool.ConnectionPool;
@@ -9,9 +10,10 @@ import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.functions.async.ResultFuture;
 import org.apache.flink.streaming.api.functions.async.RichAsyncFunction;
-
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.function.Supplier;
 
 public class DatabaseAsyncClient extends RichAsyncFunction<String, Tuple2<String, String>> {
@@ -42,7 +44,11 @@ public class DatabaseAsyncClient extends RichAsyncFunction<String, Tuple2<String
         CompletableFuture.supplyAsync(new Supplier<String>() {
             @Override
             public String get() {
-                return result.toString();
+                try {
+                    return Arrays.toString(((ArrayRowData) (result.get().getRows().get(0))).getColumns());
+                } catch (InterruptedException | ExecutionException e) {
+                    return null;
+                }
             }
         }).thenAccept( (String dbResult) -> {
             resultFuture.complete(Collections.singleton(new Tuple2<>(key, dbResult)));
