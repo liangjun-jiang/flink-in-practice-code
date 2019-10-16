@@ -28,7 +28,7 @@ public class MySQLSource extends RichSourceFunction<Student> {
     }
 
     /**
-     * 程序执行完毕就可以进行，关闭连接和释放资源的动作了
+     * close and release
      *
      * @throws Exception
      */

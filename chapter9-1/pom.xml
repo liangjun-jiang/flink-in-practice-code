@@ -161,7 +161,7 @@ under the License.
 							</filters>
 							<transformers>
 								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>com.flinkinpratice.chapter10.StreamingJob</mainClass>
+									<mainClass>com.flinkinpratice.chapter10.KafkaAsSource</mainClass>
 								</transformer>
 							</transformers>
 						</configuration>

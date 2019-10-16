@@ -29,16 +29,16 @@ public class MySQLAsSinkerExactlyOnceExample {
         env.getCheckpointConfig().enableExternalizedCheckpoints(CheckpointConfig.ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION);
         //env.setStateBackend(new FsStateBackend("file:///Users/fangwei/temp/cp/"));
 
-        //设置kafka消费参数
+        // 设置kafka消费参数
         Properties props = new Properties();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "fg");
 
-        FlinkKafkaConsumer<ObjectNode> consumer011 = new FlinkKafkaConsumer("student", new JSONKeyValueDeserializationSchema(true), props);
-        consumer011.setStartFromLatest();
-        SingleOutputStreamOperator<ObjectNode> operator = env.addSource(consumer011);
+        FlinkKafkaConsumer<ObjectNode> consumer = new FlinkKafkaConsumer("student", new JSONKeyValueDeserializationSchema(true), props);
+        consumer.setStartFromLatest();
+        SingleOutputStreamOperator<ObjectNode> operator = env.addSource(consumer);
 
-        operator.addSink(new MySQLTwoPhaseCommitSinkFunction());
+        operator.addSink(new MySQLTwoPhaseCommitSinkFunction()).name("MySqlTwoPhaseCommitSink");
 
         env.execute("MysqlExactlyOnce case!");
 

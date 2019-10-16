@@ -2,7 +2,6 @@ package com.flinkinpratice.chapter11.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.flinkinpratice.chapter11.model.Student;
-import com.flinkinpratice.chapter11.utils.DBConnectUtil;
 import org.apache.flink.api.common.ExecutionConfig;
 import org.apache.flink.api.common.typeutils.base.VoidSerializer;
 import org.apache.flink.api.java.typeutils.runtime.kryo.KryoSerializer;
@@ -11,6 +10,7 @@ import org.apache.flink.shaded.jackson2.com.fasterxml.jackson.databind.node.Obje
 import org.apache.flink.streaming.api.functions.sink.TwoPhaseCommitSinkFunction;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -42,14 +42,14 @@ public class MySQLTwoPhaseCommitSinkFunction extends TwoPhaseCommitSinkFunction<
         ps.setInt(4, student.getAge());
         ps.executeUpdate();
         //手动制造异常
-        //if(Integer.parseInt(value) == 15) System.out.println(1/0);
+//        if(Integer.parseInt(value) == 15) System.out.println(1/0);
 
     }
 
     @Override
     protected Connection beginTransaction() throws Exception {
-        String url = "jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false&autoReconnect=true";
-        this.connection = DBConnectUtil.getConnection(url, "root", "123456");
+        String url = "jdbc:mysql://localhost:3306/flinkinpractice?useUnicode=true&characterEncoding=UTF-8";
+        this.connection = DriverManager.getConnection(url, "root", "example");
         System.err.println("start beginTransaction......."+this.connection);
         return this.connection;
     }
@@ -82,4 +82,17 @@ public class MySQLTwoPhaseCommitSinkFunction extends TwoPhaseCommitSinkFunction<
             e.printStackTrace();
         }
     }
+
+    @Override
+    protected void recoverAndCommit(Connection connection) {
+        System.err.println("start recoverAndCommit......."+connection);
+
+    }
+
+
+    @Override
+    protected void recoverAndAbort(Connection connection) {
+        System.err.println("start abort recoverAndAbort......."+connection);
+    }
+
 }
