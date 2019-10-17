@@ -1,4 +1,4 @@
-package com.flinkinpractice.chapter7;
+package com.flinkinpractice.chapter7.DataSource;
 
 import com.alibaba.fastjson.JSON;
 import org.apache.flink.streaming.api.functions.source.RichSourceFunction;
@@ -6,7 +6,7 @@ import org.apache.flink.streaming.api.functions.source.RichSourceFunction;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CEPSource extends RichSourceFunction<String> {
+public class OrderEventSource extends RichSourceFunction<String> {
 
         @Override
         public void run(SourceContext<String> ctx) throws Exception {
